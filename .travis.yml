@@ -1,0 +1,29 @@
+language: java
+install: true
+addons:
+  sonarcloud:
+    organization: simonharmonicminor
+    token:
+      secure: bVauktdpt82CJacQT+VPPSFx8zYMw4OMQIvUWzI0I0PiWrk3k5MhivoIxXysOzuVPT+Ilda0ZysdFcRGIsEgFmU05wfadQ1nWN/f5ieUqnjn+phkucoxtiwnUH8GPzn3Ol97Kel1PJc7iSN7CkrBLWoRSGdysX0MrEqpBaT6TFvtF66bkq0ipe+9Rsn3SoDHek1FwgHR5DiL6dVe7wBE6W4zmZgJ1sTVkWKPqHU6xMTdop4K60yt20SRUjn8KeVpekHRrhbob4BCYw9DaoqJ56kZFPmyhnkuxzwO/IYuG7FBPxTUgvkZcLmywv794eC/fLd22lZNsLl5Zqu6gq+TzitbztXDi/M4XvtoXUlGuYQzbgr3qakiRY7QMtMvrjbuhfBBVFmrCbniPOUuiw26BvJLKkeALLx5wOWV1edBwAS/eirC0MqpJJ0l9Zo5wZq1uWrYRHX5Nsaecpe+/31Q8KMW/aIiVyLzQriicGWNAOsGgodld2h4j0wB/jva8UP6mT8lj9ctvxekhHVe/IwtSvvQfy7tmw+iGgTzEIfevLMqV5GEW1MTUPhhFa89GWvaslRO8w9svwDrQbd2r3+6RVE2qjAMjgRs/UvYQA4G4Q1J4I/uDvnvjFfrl/r+vcPo2jaJ7pc8ARcwiSXuYvXxxHasK8ZirkfAbUIERwh8w3c=
+script:
+  - "./gradlew clean build jacocoTestReport sonarqube -x signArchives"
+branches:
+  only:
+    - master
+before_deploy:
+  - openssl aes-256-cbc -K $encrypted_0fb5a69e10c8_key -iv $encrypted_0fb5a69e10c8_iv
+    -in private.key.enc -out private.key -d
+  - openssl aes-256-cbc -K $encrypted_2afbb999f001_key -iv $encrypted_2afbb999f001_iv
+    -in gradle.properties.enc -out gradle.properties -d
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: bash ./deploy.sh
+    on:
+      branch: master
+cache:
+  directories:
+    - "$HOME/.m2/repository"
+    - "$HOME/.sonar/cache"
+    - "$HOME/.gradle"
+    - ".gradle"
