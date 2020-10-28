@@ -1,15 +1,36 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id 'maven'
+	id 'jacoco'
+	id 'io.codearte.nexus-staging' version '0.11.0'
+	id "org.sonarqube" version "2.7.1"
 }
 
+jacoco {
+	toolVersion = '0.8.3'
+	reportsDir = file("$buildDir/reports")
+}
+
+apply plugin: 'com.bmuschko.nexus'
+
 group = 'com.kirekov'
-version = '0.0.1-SNAPSHOT'
+version = 'DEV-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -21,4 +42,64 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+modifyPom {
+	project {
+		name 'spring-data-specification-builder'
+		description 'Spring boot library that provides fluent API to define and compose specifications for data querying'
+		url 'https://github.com/SimonHarmonicMinor/spring-data-specification-builder'
+		inceptionYear '2020'
+
+		scm {
+			url 'https://github.com/SimonHarmonicMinor/spring-data-specification-builder'
+			connection 'scm:https://github.com/SimonHarmonicMinor/spring-data-specification-builder.git'
+			developerConnection 'scm:git://github.com/SimonHarmonicMinor/spring-data-specification-builder.git'
+		}
+
+		licenses {
+			license {
+				name 'MIT License'
+				url 'https://www.mit.edu/~amini/LICENSE.md'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'kirekov'
+				name 'Semyon Kirekov'
+				email 'semyon@kirekov.com'
+			}
+		}
+	}
+}
+
+extraArchive {
+	sources = true
+	tests = true
+	javadoc = true
+}
+
+nexus {
+	sign = true
+	repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+}
+
+nexusStaging {
+	packageGroup = "com.github.simonharmonicminor"
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "spring-data-specification-builder"
+		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/test/jacocoTestReport.xml"
+	}
 }
