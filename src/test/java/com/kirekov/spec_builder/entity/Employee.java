@@ -18,6 +18,7 @@ public class Employee {
     @Id
     @GeneratedValue
     private final Long id;
-
     private final String name;
+
+    public static String NAME = "name";
 }
