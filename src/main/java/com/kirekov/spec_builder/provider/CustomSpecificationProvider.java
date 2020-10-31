@@ -1,5 +1,6 @@
 package com.kirekov.spec_builder.provider;
 
+import com.kirekov.spec_builder.builder.SpecificationBuilder;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
@@ -8,6 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
  * @param <Entity>   the type of the entity
  * @param <Provider> the type of the specification provider
  */
-public interface CustomSpecificationProvider<Entity, Provider extends CustomSpecificationProvider<Entity, Provider>> {
+public interface CustomSpecificationProvider<Entity, Provider extends CustomSpecificationProvider<Entity, Provider>> extends SpecificationBuilder<Entity> {
     Provider specification(Specification<Entity> specification);
 }

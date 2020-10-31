@@ -7,8 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
  * Allows to build defined specification
  *
  * @param <Entity>   the type of the entity
- * @param <Provider> the type of the specification provider
  */
-public interface SpecificationBuilder<Entity, Provider extends NotSpecificationProvider<Entity, Provider>> extends NotSpecificationProvider<Entity, Provider> {
+public interface SpecificationBuilder<Entity> {
     Specification<Entity> build();
 }
