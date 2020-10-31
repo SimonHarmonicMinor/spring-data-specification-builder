@@ -13,7 +13,7 @@ import javax.persistence.metamodel.Attribute;
  * @param <Provider> the type of the specification provider
  * @see CriteriaBuilder#equal(Expression, Object)
  */
-public interface EqSpecificationProvider<Entity, Provider extends EqSpecificationProvider<Entity, Provider>> extends SpecificationBuilder<Entity> {
+public interface EqSpecificationProvider<Entity, Provider extends EqSpecificationProvider<Entity, Provider>> {
     Provider eq(String field, Object value);
 
     Provider eq(Attribute<Entity, ?> field, Object value);

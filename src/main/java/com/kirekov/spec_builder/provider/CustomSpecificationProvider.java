@@ -9,6 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
  * @param <Entity>   the type of the entity
  * @param <Provider> the type of the specification provider
  */
-public interface CustomSpecificationProvider<Entity, Provider extends CustomSpecificationProvider<Entity, Provider>> extends SpecificationBuilder<Entity> {
+public interface CustomSpecificationProvider<Entity, Provider extends CustomSpecificationProvider<Entity, Provider>> {
     Provider specification(Specification<Entity> specification);
 }

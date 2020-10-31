@@ -12,7 +12,7 @@ import javax.persistence.metamodel.Attribute;
  * @param <Provider> the type of the specification provider
  * @see javax.persistence.criteria.CriteriaBuilder#like(Expression, String)
  */
-public interface LikeSpecificationProvider<Entity, Provider extends LikeSpecificationProvider<Entity, Provider>> extends SpecificationBuilder<Entity> {
+public interface LikeSpecificationProvider<Entity, Provider extends LikeSpecificationProvider<Entity, Provider>> {
     Provider like(String field, String pattern);
 
     Provider like(Attribute<Entity, ?> field, String pattern);

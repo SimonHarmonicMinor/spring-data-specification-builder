@@ -9,7 +9,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.metamodel.Attribute;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class FluentSpecificationBuilder<Entity> implements NotSpecificationProvider<Entity, FluentSpecificationBuilder<Entity>> {
+public class FluentSpecificationBuilder<Entity> implements NotSpecificationProvider<Entity, FluentSpecificationBuilder<Entity>>, SpecificationBuilder<Entity> {
     private final boolean denied;
     private final boolean and;
     private final Specification<Entity> result;
