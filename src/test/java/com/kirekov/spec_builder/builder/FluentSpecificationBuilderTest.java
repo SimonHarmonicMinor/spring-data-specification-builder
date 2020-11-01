@@ -118,6 +118,56 @@ class FluentSpecificationBuilderTest {
         assertFalse(employee.isPresent());
     }
 
+    @Test
+    void likeIgnoreCaseFindsMatchedFields() {
+        final var employeeName = "EmployeeName";
+        saveEmployee(employeeName);
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithAnd()
+                        .likeIgnoreCase(Employee.NAME, "%" + employeeName.toLowerCase() + "%")
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertTrue(employee.isPresent());
+        assertEquals(employeeName, employee.get().getName());
+    }
+
+    @Test
+    void likeIgnoreCaseDoesNotFindUnmatchedFields() {
+        final var employeeName = "EmployeeName";
+        saveEmployee(employeeName);
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithAnd()
+                        .likeIgnoreCase(Employee.NAME, "asdasd")
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertFalse(employee.isPresent());
+    }
+
+    @Test
+    void notLikeIgnoreCaseFindsUnmatchedFields() {
+        final var employeeName = "EmployeeName";
+        saveEmployee(employeeName);
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithAnd()
+                        .not().likeIgnoreCase(createAttribute(Employee.NAME), "asdasd")
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertTrue(employee.isPresent());
+        assertEquals(employeeName, employee.get().getName());
+    }
+
+    @Test
+    void notLikeDoesNotFindUnmatchedFields() {
+        final var employeeName = "asdasdgsdg";
+        saveEmployee(employeeName);
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithAnd()
+                        .not().likeIgnoreCase(createAttribute(Employee.NAME), "%" + employeeName + "%")
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertFalse(employee.isPresent());
+    }
+
     private void saveEmployee(String name) {
         employeeRepository.saveAndFlush(
                 Employee.builder()
