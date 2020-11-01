@@ -221,6 +221,46 @@ class FluentSpecificationBuilderTest {
         assertFalse(employee.isPresent());
     }
 
+    @Test
+    void combinedWithAndRequiresAnyMatch() {
+        final var name = "dasdasga";
+        final var age = 18;
+        employeeRepository.saveAndFlush(
+                Employee.builder()
+                        .name(name)
+                        .age(age)
+                        .build()
+        );
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithOr()
+                        .eq(Employee.NAME, name + "11")
+                        .eq(Employee.AGE, age)
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertTrue(employee.isPresent());
+        assertEquals(name, employee.get().getName());
+        assertEquals(age, employee.get().getAge());
+    }
+
+    @Test
+    void combinedWithOrFailsIfAllSpecAreFalse() {
+        final var name = "sagasg";
+        final var age = 51;
+        employeeRepository.saveAndFlush(
+                Employee.builder()
+                        .age(age)
+                        .name(name)
+                        .build()
+        );
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithOr()
+                        .eq(Employee.NAME, name + "123")
+                        .eq(Employee.AGE, age + 12)
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertFalse(employee.isPresent());
+    }
+
     private void saveEmployee(String name) {
         employeeRepository.saveAndFlush(
                 Employee.builder()
