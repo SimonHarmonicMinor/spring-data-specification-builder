@@ -168,6 +168,19 @@ class FluentSpecificationBuilderTest {
         assertFalse(employee.isPresent());
     }
 
+    @Test
+    void specificationFindsMatchedFields() {
+        final var employeeName = "t23gdfhadfhDF";
+        saveEmployee(employeeName);
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithAnd()
+                        .specification((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Employee.NAME), employeeName))
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertTrue(employee.isPresent());
+        assertEquals(employeeName, employee.get().getName());
+    }
+
     private void saveEmployee(String name) {
         employeeRepository.saveAndFlush(
                 Employee.builder()
