@@ -181,6 +181,46 @@ class FluentSpecificationBuilderTest {
         assertEquals(employeeName, employee.get().getName());
     }
 
+    @Test
+    void combinedWithAndRequiresAllMatched() {
+        final var employeeName = "EmployeeName";
+        final var age = 22;
+        employeeRepository.saveAndFlush(
+                Employee.builder()
+                        .age(age)
+                        .name(employeeName)
+                        .build()
+        );
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithAnd()
+                        .eq(createAttribute(Employee.AGE), age)
+                        .like(createAttribute(Employee.NAME), "%" + employeeName + "%")
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertTrue(employee.isPresent());
+        assertEquals(employeeName, employee.get().getName());
+        assertEquals(age, employee.get().getAge());
+    }
+
+    @Test
+    void combinedWithAndFailsIfAnySpecIsFalse() {
+        final var name = "asdad";
+        final var age = 55;
+        employeeRepository.saveAndFlush(
+                Employee.builder()
+                        .age(age)
+                        .name(name)
+                        .build()
+        );
+        final var spec =
+                FluentSpecificationBuilder.<Employee>combinedWithAnd()
+                        .eq(createAttribute(Employee.NAME), name)
+                        .eq(createAttribute(Employee.AGE), age + 1)
+                        .build();
+        final var employee = employeeRepository.findOne(spec);
+        assertFalse(employee.isPresent());
+    }
+
     private void saveEmployee(String name) {
         employeeRepository.saveAndFlush(
                 Employee.builder()
