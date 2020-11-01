@@ -10,7 +10,10 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.metamodel.Attribute;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class FluentSpecificationBuilder<Entity> implements NotSpecificationProvider<Entity, FluentSpecificationBuilder<Entity>>, SpecificationBuilder<Entity> {
+public class FluentSpecificationBuilder<Entity>
+        implements
+        NotSpecificationProvider<Entity, FluentSpecificationBuilder<Entity>>,
+        SpecificationBuilder<Entity> {
     private final boolean denied;
     private final boolean and;
     private final Specification<Entity> result;
@@ -35,7 +38,11 @@ public class FluentSpecificationBuilder<Entity> implements NotSpecificationProvi
         return from(result, true, and);
     }
 
-    private static <Entity> FluentSpecificationBuilder<Entity> from(Specification<Entity> result, boolean denied, boolean and) {
+    private static <Entity> FluentSpecificationBuilder<Entity> from(
+            Specification<Entity> result,
+            boolean denied,
+            boolean and
+    ) {
         return new FluentSpecificationBuilder<>(denied, and, result);
     }
 
@@ -71,7 +78,9 @@ public class FluentSpecificationBuilder<Entity> implements NotSpecificationProvi
 
     @Override
     public FluentSpecificationBuilder<Entity> likeIgnoreCase(String field, String pattern) {
-        return applySpecification((root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get(field)), pattern.toLowerCase()));
+        return applySpecification((root, query, criteriaBuilder) -> criteriaBuilder.like(
+                criteriaBuilder.lower(root.get(field)), pattern.toLowerCase())
+        );
     }
 
     @Override
@@ -86,7 +95,9 @@ public class FluentSpecificationBuilder<Entity> implements NotSpecificationProvi
 
     private FluentSpecificationBuilder<Entity> applySpecification(Specification<Entity> specification) {
         final var spec = getCombinedSpecification(
-                (root, query, criteriaBuilder) -> wrapWithNotIfNeeded(specification.toPredicate(root, query, criteriaBuilder))
+                (root, query, criteriaBuilder) -> wrapWithNotIfNeeded(
+                        specification.toPredicate(root, query, criteriaBuilder)
+                )
         );
         return from(spec, and);
     }
