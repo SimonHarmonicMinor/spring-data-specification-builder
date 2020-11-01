@@ -20,5 +20,8 @@ public class Employee {
     private final Long id;
     private final String name;
 
+    private final int age;
+
     public static String NAME = "name";
+    public static String AGE = "age";
 }
