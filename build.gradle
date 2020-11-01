@@ -15,6 +15,7 @@ plugins {
 	id 'jacoco'
 	id 'io.codearte.nexus-staging' version '0.11.0'
 	id "org.sonarqube" version "2.7.1"
+	id "io.freefair.lombok" version "5.3.0"
 }
 
 jacoco {
@@ -39,6 +40,7 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	testImplementation 'com.h2database:h2'
 }
 
 test {
