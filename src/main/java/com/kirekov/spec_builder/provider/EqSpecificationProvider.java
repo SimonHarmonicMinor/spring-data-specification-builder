@@ -1,7 +1,5 @@
 package com.kirekov.spec_builder.provider;
 
-import com.kirekov.spec_builder.builder.SpecificationBuilder;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.metamodel.Attribute;

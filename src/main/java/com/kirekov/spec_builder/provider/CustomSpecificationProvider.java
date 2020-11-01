@@ -1,6 +1,5 @@
 package com.kirekov.spec_builder.provider;
 
-import com.kirekov.spec_builder.builder.SpecificationBuilder;
 import org.springframework.data.jpa.domain.Specification;
 
 /**

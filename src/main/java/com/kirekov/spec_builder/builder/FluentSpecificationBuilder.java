@@ -1,6 +1,7 @@
 package com.kirekov.spec_builder.builder;
 
-import com.kirekov.spec_builder.provider.*;
+import com.kirekov.spec_builder.provider.CombinedSpecificationProvider;
+import com.kirekov.spec_builder.provider.NotSpecificationProvider;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;

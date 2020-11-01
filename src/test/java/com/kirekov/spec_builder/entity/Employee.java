@@ -2,8 +2,6 @@ package com.kirekov.spec_builder.entity;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.junit.jupiter.api.Test;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
