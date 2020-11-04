@@ -1,5 +1,6 @@
 package com.kirekov.spec_builder.builder;
 
+import com.kirekov.spec_builder.from.PathFunction;
 import com.kirekov.spec_builder.provider.CombinedSpecificationProvider;
 import com.kirekov.spec_builder.provider.NotSpecificationProvider;
 import lombok.AccessLevel;
@@ -58,7 +59,12 @@ public class FluentSpecificationBuilder<Entity>
 
     @Override
     public FluentSpecificationBuilder<Entity> eq(String field, Object value) {
-        return applySpecification((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(field), value));
+        return eq(root -> root.get(field), value);
+    }
+
+    @Override
+    public FluentSpecificationBuilder<Entity> eq(PathFunction<Entity> pathFunction, Object value) {
+        return applySpecification((root, query, criteriaBuilder) -> criteriaBuilder.equal(pathFunction.apply(root), value));
     }
 
     @Override
@@ -90,7 +96,16 @@ public class FluentSpecificationBuilder<Entity>
 
     @Override
     public Specification<Entity> build() {
-        return result;
+        return innerBuild(false);
+    }
+
+    @Override
+    public Specification<Entity> buildDistinct() {
+        return innerBuild(true);
+    }
+
+    private Specification<Entity> innerBuild(boolean distinct) {
+        return (root, query, criteriaBuilder) -> result.toPredicate(root, distinct ? query.distinct(true) : query.distinct(false), criteriaBuilder);
     }
 
     private FluentSpecificationBuilder<Entity> applySpecification(Specification<Entity> specification) {
