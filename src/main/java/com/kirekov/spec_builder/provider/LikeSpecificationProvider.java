@@ -1,5 +1,7 @@
 package com.kirekov.spec_builder.provider;
 
+import com.kirekov.spec_builder.from.PathFunction;
+
 import javax.persistence.criteria.Expression;
 import javax.persistence.metamodel.Attribute;
 
@@ -15,7 +17,11 @@ public interface LikeSpecificationProvider<Entity, Provider extends LikeSpecific
 
     Provider like(Attribute<Entity, ?> field, String pattern);
 
+    Provider like(PathFunction<Entity> pathFunction, String pattern);
+
     Provider likeIgnoreCase(String field, String pattern);
 
     Provider likeIgnoreCase(Attribute<Entity, ?> field, String pattern);
+
+    Provider likeIgnoreCase(PathFunction<Entity> pathFunction, String pattern);
 }
