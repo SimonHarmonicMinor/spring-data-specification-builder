@@ -1,5 +1,7 @@
 package com.kirekov.spec_builder.provider;
 
+import com.kirekov.spec_builder.from.PathFunction;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.metamodel.Attribute;
@@ -15,4 +17,6 @@ public interface EqSpecificationProvider<Entity, Provider extends EqSpecificatio
     Provider eq(String field, Object value);
 
     Provider eq(Attribute<Entity, ?> field, Object value);
+
+    Provider eq(PathFunction<Entity> pathFunction, Object value);
 }
