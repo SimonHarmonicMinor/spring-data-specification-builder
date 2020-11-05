@@ -10,5 +10,5 @@ import org.springframework.data.jpa.domain.Specification;
 public interface SpecificationBuilder<Entity> {
     Specification<Entity> build();
 
-    Specification<Entity> buildDistinct();
+    Specification<Entity> buildDistinct()   ;
 }

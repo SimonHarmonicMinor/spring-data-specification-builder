@@ -74,7 +74,12 @@ public class FluentSpecificationBuilder<Entity>
 
     @Override
     public FluentSpecificationBuilder<Entity> like(String field, String pattern) {
-        return applySpecification((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(field), pattern));
+        return like(root -> root.get(field), pattern);
+    }
+
+    @Override
+    public FluentSpecificationBuilder<Entity> like(PathFunction<Entity> pathFunction, String pattern) {
+        return applySpecification((root, query, criteriaBuilder) -> criteriaBuilder.like(pathFunction.apply(root), pattern));
     }
 
     @Override
@@ -84,8 +89,13 @@ public class FluentSpecificationBuilder<Entity>
 
     @Override
     public FluentSpecificationBuilder<Entity> likeIgnoreCase(String field, String pattern) {
+        return likeIgnoreCase(root -> root.get(field), pattern);
+    }
+
+    @Override
+    public FluentSpecificationBuilder<Entity> likeIgnoreCase(PathFunction<Entity> pathFunction, String pattern) {
         return applySpecification((root, query, criteriaBuilder) -> criteriaBuilder.like(
-                criteriaBuilder.lower(root.get(field)), pattern.toLowerCase())
+                criteriaBuilder.lower(pathFunction.apply(root)), pattern.toLowerCase())
         );
     }
 
