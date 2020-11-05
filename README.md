@@ -128,3 +128,13 @@ final var spec = FluentSpecificationBuilder()
                      )
                      .build();
 ```
+
+If you need to specify a field in a child entity, you can use `PathFunction`.
+
+```java
+final var spec = FluentSpecificationBuilder
+                     .<Student>combinedWithAnd()
+                     .like(Student_.name, "%a%")
+                     .not().eq(root -> root.get(Student_.university).get(University_.name), "MIT")
+                     .buildDistinct();
+```
